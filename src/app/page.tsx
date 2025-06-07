@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, Suspense } from 'react';
+import { useState, useEffect } from 'react';
 import Header from '@/components/layout/Header';
 import LocationSearchForm from '@/components/weather/LocationSearchForm';
 import CurrentWeatherCard from '@/components/weather/CurrentWeatherCard';
@@ -11,6 +11,7 @@ import { fetchWeatherData, fetchWeatherForecast } from '@/lib/weather-api';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Globe } from 'lucide-react';
+import TripPlannerForm from '@/components/trip-planner/TripPlannerForm';
 
 export default function WeatherPage() {
   const [currentLocation, setCurrentLocation] = useState<string | null>(null);
@@ -24,15 +25,18 @@ export default function WeatherPage() {
 
   useEffect(() => {
     setIsClient(true);
-    // Fetch weather for a default location on initial load
-    handleSearch(defaultLocation);
-  }, []);
+    // Fetch weather for a default location on initial load if no location is set
+    if (!currentLocation) {
+      handleSearch(defaultLocation);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Only run on initial client mount
 
   const handleSearch = async (location: string) => {
     setIsLoading(true);
     setError(null);
-    setWeatherData(null); // Clear previous data
-    setForecastData([]); // Clear previous forecast
+    setWeatherData(null); 
+    setForecastData([]); 
 
     try {
       const [currentWeather, forecast] = await Promise.all([
@@ -92,7 +96,7 @@ export default function WeatherPage() {
   return (
     <>
       <Header />
-      <main className="flex-grow container mx-auto px-4 py-8 space-y-8">
+      <main className="flex-grow container mx-auto px-4 py-8 space-y-10">
         <section className="flex flex-col items-center">
           <h2 className="text-2xl font-headline mb-4 text-center">Find Weather Anywhere</h2>
           {isClient ? (
@@ -111,14 +115,14 @@ export default function WeatherPage() {
           </Alert>
         )}
 
-        {!isLoading && !error && !weatherData && (
+        {!isLoading && !error && !weatherData && isClient && (
           <div className="text-center py-10">
             <Globe className="mx-auto h-16 w-16 text-muted-foreground mb-4" />
             <p className="text-xl text-muted-foreground font-headline">
               Welcome to WeatherWise!
             </p>
             <p className="text-muted-foreground">
-              Search for a location to get started or see data for {defaultLocation}.
+              Search for a location to get started or see data for {currentLocation || defaultLocation}.
             </p>
           </div>
         )}
@@ -135,6 +139,11 @@ export default function WeatherPage() {
             </section>
           </>
         )}
+
+        <section className="my-8 pt-8 border-t border-border">
+          <TripPlannerForm />
+        </section>
+
       </main>
       <footer className="py-6 text-center border-t">
         <p className="text-sm text-muted-foreground">

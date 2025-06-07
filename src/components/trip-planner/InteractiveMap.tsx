@@ -25,28 +25,28 @@ interface InteractiveMapProps {
   // For example: markers?: Array<{ position: LatLngExpression; popupText: string }>;
 }
 
+// Define style object outside component for stable identity
+const mapContainerStyle: React.CSSProperties = {
+  height: '400px',
+  width: '100%',
+  borderRadius: 'var(--radius)',
+  border: '1px solid hsl(var(--border))',
+  boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+};
+
 const InteractiveMap: React.FC<InteractiveMapProps> = ({
   center = [20.5937, 78.9629], // Default to center of India, for example
   zoom = 4,                   // Zoom to show a country-level view
 }) => {
-  // MapContainer relies on window, so ensure it only renders client-side.
-  // next/dynamic with ssr:false handles this, but this is an extra check.
-  if (typeof window === 'undefined') {
-    return <div style={{ height: '400px', width: '100%', backgroundColor: 'hsl(var(--muted))', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '0.5rem', border: '1px solid hsl(var(--border))' }}>Loading map...</div>;
-  }
+  // The explicit 'typeof window === undefined' check is removed,
+  // as next/dynamic with ssr:false in the parent component (TripPlanDisplay) handles client-side rendering.
 
   return (
-    <MapContainer 
-        center={center} 
-        zoom={zoom} 
-        scrollWheelZoom={true} 
-        style={{ 
-            height: '400px', 
-            width: '100%', 
-            borderRadius: 'var(--radius)', 
-            border: '1px solid hsl(var(--border))',
-            boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-        }}
+    <MapContainer
+        center={center}
+        zoom={zoom}
+        scrollWheelZoom={true}
+        style={mapContainerStyle} // Use the stable style object
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

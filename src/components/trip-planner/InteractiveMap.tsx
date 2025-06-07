@@ -5,6 +5,7 @@ import 'leaflet/dist/leaflet.css';
 import { MapContainer, TileLayer } from 'react-leaflet';
 import type { LatLngExpression } from 'leaflet';
 import L from 'leaflet';
+import { useState, useEffect } from 'react';
 
 // Fix for default marker icon issue with Webpack which can occur with react-leaflet
 // https://github.com/PaulLeCam/react-leaflet/issues/808
@@ -38,15 +39,23 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
   center = [20.5937, 78.9629], // Default to center of India, for example
   zoom = 4,                   // Zoom to show a country-level view
 }) => {
-  // The explicit 'typeof window === undefined' check is removed,
-  // as next/dynamic with ssr:false in the parent component (TripPlanDisplay) handles client-side rendering.
+  const [clientRendered, setClientRendered] = useState(false);
+
+  useEffect(() => {
+    setClientRendered(true);
+  }, []);
+
+  if (!clientRendered) {
+    // The loading placeholder is handled by next/dynamic in TripPlanDisplay
+    return null; 
+  }
 
   return (
     <MapContainer
         center={center}
         zoom={zoom}
         scrollWheelZoom={true}
-        style={mapContainerStyle} // Use the stable style object
+        style={mapContainerStyle} 
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

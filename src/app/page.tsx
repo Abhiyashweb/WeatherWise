@@ -18,10 +18,12 @@ export default function WeatherPage() {
   const [forecastData, setForecastData] = useState<WeatherForecastItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isClient, setIsClient] = useState(false);
 
   const defaultLocation = "New York";
 
   useEffect(() => {
+    setIsClient(true);
     // Fetch weather for a default location on initial load
     handleSearch(defaultLocation);
   }, []);
@@ -76,6 +78,16 @@ export default function WeatherPage() {
     </div>
   );
 
+  const LocationSearchFormSkeleton = () => (
+    <div className="flex gap-2 items-end w-full max-w-md">
+      <div className="flex-grow space-y-2">
+        <Skeleton className="h-4 w-1/4 mb-1" />
+        <Skeleton className="h-10 w-full" />
+      </div>
+      <Skeleton className="h-10 w-[100px]" />
+    </div>
+  );
+
 
   return (
     <>
@@ -83,7 +95,11 @@ export default function WeatherPage() {
       <main className="flex-grow container mx-auto px-4 py-8 space-y-8">
         <section className="flex flex-col items-center">
           <h2 className="text-2xl font-headline mb-4 text-center">Find Weather Anywhere</h2>
-          <LocationSearchForm onSearch={handleSearch} isSearching={isLoading} />
+          {isClient ? (
+            <LocationSearchForm onSearch={handleSearch} isSearching={isLoading} />
+          ) : (
+            <LocationSearchFormSkeleton />
+          )}
         </section>
 
         {isLoading && <WeatherContentSkeleton />}

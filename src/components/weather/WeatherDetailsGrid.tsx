@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Droplets, Wind as WindIcon, Umbrella, Gauge } from "lucide-react"; // Using Gauge for precipitation
+import { Droplets, Wind as WindIcon, Gauge } from "lucide-react"; 
 import type { WeatherData } from "@/types/weather";
 
 interface WeatherDetailsGridProps {
@@ -7,10 +7,10 @@ interface WeatherDetailsGridProps {
 }
 
 const DetailItem = ({ icon: Icon, label, value, unit }: { icon: React.ElementType, label: string, value: string | number, unit: string }) => (
-  <div className="flex flex-col items-center p-3 bg-secondary/50 rounded-lg shadow">
-    <Icon className="h-8 w-8 text-primary mb-2" />
-    <p className="text-sm font-medium text-muted-foreground">{label}</p>
-    <p className="text-xl font-semibold text-foreground">{value} <span className="text-xs">{unit}</span></p>
+  <div className="flex flex-col items-center p-4 bg-secondary/50 rounded-lg shadow-md">
+    <Icon className="h-10 w-10 text-primary mb-3" />
+    <p className="text-base font-medium text-muted-foreground">{label}</p>
+    <p className="text-2xl font-semibold text-foreground">{value} <span className="text-sm">{unit}</span></p>
   </div>
 );
 

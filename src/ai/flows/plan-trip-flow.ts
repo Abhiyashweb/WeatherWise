@@ -50,11 +50,9 @@ const prompt = ai.definePrompt({
           *   \`estimatedWeather\`:
               *   \`condition\`: A simulated weather condition (e.g., "Sunny with light breeze", "Cloudy, chance of drizzle", "Warm and humid"). Be creative and consider the travel date if provided.
               *   \`temperature\`: A simulated temperature (e.g., "28°C", "22°C").
-      *   \`mapImageUrl\`: Generate a placeholder map image URL using 'https://placehold.co/WIDTHxHEIGHT.png' format. Use a width like 600 or 800 and height like 400. Do NOT include text query parameters in the URL. For example: 'https://placehold.co/600x400.png'.
-      *   \`mapImageHint\`: Provide one or two keywords (maximum two words) for the map image, such as "route map" or "city highway".
-
+      
   2.  **Alternative Route (Optional but Recommended):**
-      *   If feasible, suggest one alternative route with the same level of detail as above (summary, distance, duration, waypoints with weather, map image URL and hint). If not, you can omit this.
+      *   If feasible, suggest one alternative route with the same level of detail as above (summary, distance, duration, waypoints with weather). If not, you can omit this.
 
   3.  **General Advice (Optional):**
       *   Provide 2-3 general travel tips relevant to the trip (e.g., "Start early to avoid traffic", "Check for toll charges", "Carry water and snacks").
@@ -74,13 +72,6 @@ const planTripFlow = ai.defineFlow(
     const {output} = await prompt(input);
     if (!output) {
       throw new Error("Failed to generate trip plan.");
-    }
-    // Ensure mapImageHint is always present if mapImageUrl is.
-    if (output.suggestedRoute && output.suggestedRoute.mapImageUrl && !output.suggestedRoute.mapImageHint) {
-        output.suggestedRoute.mapImageHint = "route map";
-    }
-    if (output.alternativeRoute && output.alternativeRoute.mapImageUrl && !output.alternativeRoute.mapImageHint) {
-        output.alternativeRoute.mapImageHint = "alternate route";
     }
     return output;
   }

@@ -5,14 +5,7 @@ import type { PlanTripOutput, RouteSuggestion } from '@/ai/flows/plan-trip-flow'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { MapIcon, RouteIcon, ClockIcon, SparklesIcon, NavigationIcon, CloudyIcon, SunIcon, ZapIcon, SnowflakeIcon, UmbrellaIcon, WindIcon, ThermometerIcon } from 'lucide-react';
-import dynamic from 'next/dynamic';
-import { Skeleton } from '@/components/ui/skeleton';
-
-// Dynamically import the map component for client-side rendering
-const GoogleMapDisplay = dynamic(() => import('./GoogleMapDisplay'), {
-  ssr: false,
-  loading: () => <Skeleton className="h-[400px] w-full rounded-lg border shadow-sm bg-muted" />,
-});
+// GoogleMapDisplay and dynamic import removed
 
 interface TripPlanDisplayProps {
   plan: PlanTripOutput;
@@ -53,10 +46,7 @@ function RouteDetails({ route, title }: { route: RouteSuggestion; title: string 
           </div>
         </div>
 
-        {/* Replace Image with GoogleMapDisplay */}
-        <div className="my-4 rounded-lg overflow-hidden border border-border shadow-sm aspect-video relative bg-muted">
-          <GoogleMapDisplay />
-        </div>
+        {/* Map display removed */}
         
         <h4 className="font-semibold text-md mb-2 mt-6 text-foreground">Waypoints & Estimated Weather:</h4>
         <Accordion type="single" collapsible className="w-full">

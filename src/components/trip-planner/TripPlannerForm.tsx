@@ -7,33 +7,53 @@ import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { MapPinned, Route as RouteIconLucide, CalendarDays, Loader2 } from 'lucide-react';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Calendar } from '@/components/ui/calendar';
+import { MapPinned, Route as RouteIconLucide, CalendarIcon, Loader2 } from 'lucide-react';
 import { PlanTripInputSchema, type PlanTripInput } from '@/ai/schemas/trip-schemas';
 import { planTrip, type PlanTripOutput } from '@/ai/flows/plan-trip-flow';
 import { useState } from 'react';
 import TripPlanDisplay from './TripPlanDisplay';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { format } from 'date-fns';
+import { cn } from '@/lib/utils';
+import { z } from 'zod'; // Added missing import
+
+// Define a schema for the form's internal state, using Date for travelDate
+const FormSchemaInternal = PlanTripInputSchema.extend({
+  travelDate: z.date().optional(), // Internally, travelDate will be a Date object or undefined
+});
+type PlanTripFormInternalData = z.infer<typeof FormSchemaInternal>;
+
 
 export default function TripPlannerForm() {
   const [tripPlan, setTripPlan] = useState<PlanTripOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const form = useForm<PlanTripInput>({
-    resolver: zodResolver(PlanTripInputSchema),
+  const form = useForm<PlanTripFormInternalData>({
+    resolver: zodResolver(FormSchemaInternal),
     defaultValues: {
       origin: '',
       destination: '',
-      travelDate: '',
+      travelDate: undefined,
     },
   });
 
-  async function onSubmit(data: PlanTripInput) {
+  async function onSubmit(data: PlanTripFormInternalData) {
     setIsLoading(true);
     setError(null);
     setTripPlan(null);
+
+    // Convert internal form data (with Date object) to the AI flow input type (with string date)
+    const submissionData: PlanTripInput = {
+      origin: data.origin,
+      destination: data.destination,
+      travelDate: data.travelDate ? format(data.travelDate, "yyyy-MM-dd") : undefined,
+    };
+
     try {
-      const result = await planTrip(data);
+      const result = await planTrip(submissionData);
       setTripPlan(result);
     } catch (e: any) {
       setError(e.message || 'Failed to generate trip plan. Please try again.');
@@ -87,11 +107,39 @@ export default function TripPlannerForm() {
               control={form.control}
               name="travelDate"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="flex items-center"><CalendarDays className="mr-1.5 h-4 w-4 text-muted-foreground" />Travel Date (Optional)</FormLabel>
-                  <FormControl>
-                    <Input type="text" placeholder="E.g., Tomorrow, 2024-12-25" {...field} />
-                  </FormControl>
+                <FormItem className="flex flex-col">
+                  <FormLabel className="flex items-center"><CalendarIcon className="mr-1.5 h-4 w-4 text-muted-foreground" />Travel Date (Optional)</FormLabel>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant={"outline"}
+                          className={cn(
+                            "w-full pl-3 text-left font-normal",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          {field.value ? (
+                            format(field.value, "PPP")
+                          ) : (
+                            <span>Pick a date</span>
+                          )}
+                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={field.value}
+                        onSelect={(date) => field.onChange(date)}
+                        disabled={(date) =>
+                          date < new Date(new Date().setHours(0, 0, 0, 0)) // Disable past dates
+                        }
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
                   <FormMessage />
                 </FormItem>
               )}

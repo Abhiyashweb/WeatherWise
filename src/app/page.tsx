@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -12,6 +13,8 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Globe } from 'lucide-react';
 import TripPlannerForm from '@/components/trip-planner/TripPlannerForm';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
+
 
 export default function WeatherPage() {
   const [currentLocation, setCurrentLocation] = useState<string | null>(null);
@@ -92,6 +95,32 @@ export default function WeatherPage() {
     </div>
   );
 
+  const TripPlannerFormSkeleton = () => (
+    <Card className="w-full shadow-lg border">
+      <CardHeader>
+        <Skeleton className="h-7 w-1/3 mb-1" />
+        <Skeleton className="h-4 w-2/3" />
+      </CardHeader>
+      <CardContent className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-1/4" />
+            <Skeleton className="h-10 w-full" />
+          </div>
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-1/4" />
+            <Skeleton className="h-10 w-full" />
+          </div>
+        </div>
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-1/4" />
+          <Skeleton className="h-10 w-full" />
+        </div>
+        <Skeleton className="h-12 w-full" />
+      </CardContent>
+    </Card>
+  );
+
 
   return (
     <>
@@ -141,7 +170,7 @@ export default function WeatherPage() {
         )}
 
         <section className="my-8 pt-8 border-t border-border">
-          <TripPlannerForm />
+          {isClient ? <TripPlannerForm /> : <TripPlannerFormSkeleton />}
         </section>
 
       </main>

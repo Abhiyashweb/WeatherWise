@@ -35,7 +35,7 @@ export default function TripPlannerForm() {
     try {
       const result = await planTrip(data);
       setTripPlan(result);
-    } catch (e: any) { // Added opening curly brace here
+    } catch (e: any) {
       setError(e.message || 'Failed to generate trip plan. Please try again.');
       console.error(e);
     } finally {
@@ -63,7 +63,7 @@ export default function TripPlannerForm() {
                   <FormItem>
                     <FormLabel className="flex items-center"><MapPinned className="mr-1.5 h-4 w-4 text-muted-foreground" />Origin</FormLabel>
                     <FormControl>
-                      <Input placeholder="E.g., Mumbai" {...field} />
+                      <Input type="text" placeholder="E.g., Mumbai" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -76,7 +76,7 @@ export default function TripPlannerForm() {
                   <FormItem>
                     <FormLabel className="flex items-center"><MapPinned className="mr-1.5 h-4 w-4 text-muted-foreground" />Destination</FormLabel>
                     <FormControl>
-                      <Input placeholder="E.g., Pune" {...field} />
+                      <Input type="text" placeholder="E.g., Pune" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -121,4 +121,3 @@ export default function TripPlannerForm() {
     </Card>
   );
 }
-

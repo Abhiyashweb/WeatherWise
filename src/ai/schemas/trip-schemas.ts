@@ -11,7 +11,7 @@
  * - PlanTripOutput: TypeScript type for trip planning output.
  */
 
-import {z} from 'genkit';
+import {z} from 'zod'; // Changed from 'genkit'
 
 export const WaypointSchema = z.object({
   locationName: z.string().describe('Name of the waypoint or segment (e.g., "City Center", "Highway Section A1").'),

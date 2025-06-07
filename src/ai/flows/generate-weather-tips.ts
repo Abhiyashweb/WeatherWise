@@ -1,3 +1,4 @@
+
 'use server';
 
 /**
@@ -9,7 +10,7 @@
  */
 
 import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
+import {z} from 'zod'; // Changed from 'genkit'
 
 const WeatherTipsInputSchema = z.object({
   location: z.string().describe('The location for which weather tips are needed.'),

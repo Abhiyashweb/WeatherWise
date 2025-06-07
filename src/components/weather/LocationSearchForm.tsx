@@ -42,7 +42,7 @@ export default function LocationSearchForm({ onSearch, isSearching }: LocationSe
             <FormItem className="flex-grow">
               <FormLabel>Location</FormLabel>
               <FormControl>
-                <Input placeholder="E.g., London, New York, Tokyo" {...field} />
+                <Input type="text" placeholder="E.g., London, New York, Tokyo" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

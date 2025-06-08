@@ -181,10 +181,10 @@ export default function WeatherPage() {
             &copy; {new Date().getFullYear()} WeatherWise by Abhiyash. Powered by AI and Sunshine.
           </p>
           <div className="flex space-x-4">
-            <Link href="#" aria-label="Abhiyash Instagram" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+            <Link href="https://www.instagram.com/abhiyashhh" aria-label="Abhiyash Instagram" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
               <Instagram size={20} />
             </Link>
-            <Link href="#" aria-label="Abhiyash X" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+            <Link href="https://twitter.com/AbhiyashB" aria-label="Abhiyash X" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
               <Twitter size={20} />
             </Link>
           </div>

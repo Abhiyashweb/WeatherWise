@@ -11,9 +11,10 @@ import type { WeatherData, WeatherForecastItem } from '@/types/weather';
 import { fetchWeatherData, fetchWeatherForecast } from '@/lib/weather-api';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Globe } from 'lucide-react';
+import { Globe, Instagram, Twitter } from 'lucide-react'; // Added Instagram and Twitter
 import TripPlannerForm from '@/components/trip-planner/TripPlannerForm';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
+import Link from 'next/link';
 
 
 export default function WeatherPage() {
@@ -175,9 +176,19 @@ export default function WeatherPage() {
 
       </main>
       <footer className="py-6 text-center border-t">
-        <p className="text-sm text-muted-foreground">
-          &copy; {new Date().getFullYear()} WeatherWise. Powered by AI and Sunshine.
-        </p>
+        <div className="container mx-auto flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+          <p className="text-sm text-muted-foreground">
+            &copy; {new Date().getFullYear()} WeatherWise by Abhiyash. Powered by AI and Sunshine.
+          </p>
+          <div className="flex space-x-4">
+            <Link href="#" aria-label="Abhiyash Instagram" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+              <Instagram size={20} />
+            </Link>
+            <Link href="#" aria-label="Abhiyash X" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+              <Twitter size={20} />
+            </Link>
+          </div>
+        </div>
       </footer>
     </>
   );

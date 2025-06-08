@@ -11,7 +11,7 @@ import type { WeatherData, WeatherForecastItem } from '@/types/weather';
 import { fetchWeatherData, fetchWeatherForecast } from '@/lib/weather-api';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Globe, Instagram, Twitter } from 'lucide-react'; // Added Instagram and Twitter
+import { Globe, Instagram, Twitter } from 'lucide-react';
 import TripPlannerForm from '@/components/trip-planner/TripPlannerForm';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import Link from 'next/link';
@@ -176,7 +176,7 @@ export default function WeatherPage() {
 
       </main>
       <footer className="py-6 text-center border-t">
-        <div className="container mx-auto flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+        <div className="container mx-auto flex flex-col items-center space-y-2">
           <p className="text-sm text-muted-foreground">
             &copy; {new Date().getFullYear()} WeatherWise by Abhiyash. Powered by AI and Sunshine.
           </p>
